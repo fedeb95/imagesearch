@@ -28,7 +28,7 @@ public class BruteModel implements Model {
 		for (int i = 0; i < files.length; i++) {
 			if(files[i].isFile()) {
 				Image img = new ImageProxy(files[i].getAbsolutePath());
-				this.images.add(img);
+				addImage(img);
 			}
 		}
 	}
