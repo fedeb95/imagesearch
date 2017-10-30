@@ -8,9 +8,9 @@ import imagesearch.NotCompatibleException;
 
 public class DirectoryTest extends AbstractTestWithImages{
 
-	@Test @Ignore
+	@Test 
 	public void test() throws IOException, NotCompatibleException {
-		File folder = new File("/media/federico/Volume1/space_collection");
+		File folder = new File("/home/federico/Immagini/");
 		String imgToCompare = PATH+"1.jpg";
 		File[] files = folder.listFiles();
 		for (int i = 0; i < files.length; i++) {

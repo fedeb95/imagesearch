@@ -2,6 +2,7 @@ package imagesearch.model.treemodel;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.List;
 
 import imagesearch.NotCompatibleException;
 import imagesearch.comparator.Comparator;
@@ -14,9 +15,9 @@ public class TreeModel implements Model{
 	private NodeFactory factory;
 	private SimpleImageTree tree;
 
-	public TreeModel(Comparator comparator) {
+	public TreeModel(Comparator comparator,double threshold) {
 		this.factory = new SimpleNodeFactory();
-		this.tree = new SimpleImageTree(comparator);
+		this.tree = new SimpleImageTree(comparator,threshold);
 	}
 
 	@Override
@@ -35,13 +36,11 @@ public class TreeModel implements Model{
 				addImage(img);
 			}
 		}
-		
 	}
-
+	
 	@Override
-	public Iterator<Image> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Image> search(Image img) throws NotCompatibleException {
+		return this.tree.pathToLeaf(img);
 	}
 
 }

@@ -5,11 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import imagesearch.NotCompatibleException;
+import imagesearch.comparator.HistogramComparator;
 import imagesearch.controller.Controller;
 import imagesearch.image.Image;
+import imagesearch.model.treemodel.TreeModel;
 
 public class Console {
 	private static final Object NEW_LINE = "\n";
+	private static final double THRESHOLD = 0.1;
 
 	public static void main(String[] args) {
 		StringBuilder log = new StringBuilder();
@@ -26,10 +29,11 @@ public class Console {
 	private static void tryToMatch(StringBuilder log, File image, File dir) {
 		if(!image.isFile()) {
 			log.append("First argument is not a file.");
-		} else if(!image.isDirectory()) {
+		} else if(!dir.isDirectory()) {
 			log.append("Second argument is not a directory.");
 		}else {
-			Controller c = new Controller();
+			Controller c = new Controller(new TreeModel(new HistogramComparator(), THRESHOLD), 
+					new HistogramComparator());
 			List<Image> result = null;
 			result = trySearch(log, image, dir, c, result);
 			if (result != null) {
