@@ -1,32 +1,22 @@
 package imagesearch.image;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import org.apache.commons.vfs2.FileNotFolderException;
-import org.openimaj.image.ImageUtilities;
-import org.openimaj.image.MBFImage;
+import imagesearch.image.factory.ImageFactory;
 
 public class ImageProxy implements Image {
 	
 	private String path;
+	private ImageFactory factory;
 
-	public ImageProxy(String path) {
+	public ImageProxy(String path,ImageFactory proxedFact) {
 		this.path = path;
+		this.factory = proxedFact;
 	}
 
 	@Override
 	public Object getImg() {
-		MBFImage image; 
-		try {
-			image = ImageUtilities.createMBFImage(ImageIO.read(new File(this.path)),false);
-		}catch(IOException e) {
-			image = null;
-		}
-		return image;
+		return this.factory.create(new File(path)).getImg();
 	}
 
 	@Override

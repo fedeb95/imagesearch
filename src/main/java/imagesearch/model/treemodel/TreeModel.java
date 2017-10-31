@@ -1,28 +1,31 @@
 package imagesearch.model.treemodel;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
 
 import imagesearch.NotCompatibleException;
 import imagesearch.comparator.Comparator;
 import imagesearch.image.Image;
 import imagesearch.image.ImageProxy;
+import imagesearch.image.factory.ImageFactory;
 import imagesearch.model.Model;
 
 public class TreeModel implements Model{
 	
-	private NodeFactory factory;
+	private NodeFactory nodeFactory;
 	private SimpleImageTree tree;
+	private ImageFactory imageFactory;
 
-	public TreeModel(Comparator comparator,double threshold) {
-		this.factory = new SimpleNodeFactory();
+	public TreeModel(NodeFactory nodeFact,
+			Comparator comparator,double threshold) {
+		this.nodeFactory = nodeFact;
 		this.tree = new SimpleImageTree(comparator,threshold);
+		this.imageFactory = comparator.getImageFactory();
 	}
 
 	@Override
 	public void addImage(Image img) throws NotCompatibleException {
-		ImageNode n = this.factory.create(img);
+		ImageNode n = this.nodeFactory.create(img);
 		this.tree.insert(n);
 	}
 
@@ -32,7 +35,7 @@ public class TreeModel implements Model{
 		File[] files = folder.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			if(files[i].isFile()) {
-				Image img = new ImageProxy(files[i].getAbsolutePath());
+				Image img = this.imageFactory.create(files[i]);
 				addImage(img);
 			}
 		}

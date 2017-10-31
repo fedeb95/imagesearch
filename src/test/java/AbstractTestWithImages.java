@@ -9,6 +9,7 @@ import org.openimaj.image.MBFImage;
 import imagesearch.NotCompatibleException;
 import imagesearch.comparator.HistogramComparator;
 import imagesearch.image.OpenimajImage;
+import imagesearch.image.factory.OpenimajFactory;
 
 public abstract class AbstractTestWithImages {
 	public static final String PATH = "/home/federico/imagedb/ImageDB/src/test/images/";
@@ -20,7 +21,7 @@ public abstract class AbstractTestWithImages {
     	OpenimajImage image2 = new OpenimajImage();
     	image1.setImg(img1);
     	image2.setImg(img2);
-    	HistogramComparator comparator = new HistogramComparator();
+    	HistogramComparator comparator = new HistogramComparator(new OpenimajFactory());
     	return comparator.compare(image1, image2);	
 	}
 }

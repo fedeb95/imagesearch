@@ -33,7 +33,7 @@ public class BruteModel implements Model {
 		File[] files = folder.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			if(files[i].isFile()) {
-				Image img = new ImageProxy(files[i].getAbsolutePath());
+				Image img = comparator.getImageFactory().create(files[i]);
 				addImage(img);
 			}
 		}

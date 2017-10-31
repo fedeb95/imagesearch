@@ -29,22 +29,15 @@ public class SimpleImageTree implements ImageTree{
 			node = (SimpleImageNode) n;
 		if (this.root == null) 
 			this.root = node;
-		else {
-			if(this.root.getLeft() == null)
-				this.root.setLeft(node);
-			else if (this.root.getRight() == null)
-				this.root.setRight(node);
-			else {
-				compareInsert(node, root);
-			}
-		}
+		else
+			compareInsert(node, root);
 	}
 
 	private void compareInsert(SimpleImageNode toInsert, SimpleImageNode node) throws NotCompatibleException {
 		if(node.getLeft() == null)
-			node.setLeft(node);
+			node.setLeft(toInsert);
 		else if (node.getRight() == null)
-			node.setRight(node);
+			node.setRight(toInsert);
 		else {
 			//double resRoot = this.comparator.compare(toInsert.getImage(),node.getImage());
 			double resLeft = this.comparator.compare(toInsert.getImage(), node.getLeft().getImage());
@@ -57,7 +50,7 @@ public class SimpleImageTree implements ImageTree{
 //				tmp.setLeft(null);
 //				tmp.setRight(null);
 //				compareInsert(tmp, node);
-			if(resLeft > resRight)
+			if(resLeft < resRight)
 				compareInsert(toInsert,node.getLeft());
 			else
 				compareInsert(toInsert,node.getRight());
@@ -70,7 +63,10 @@ public class SimpleImageTree implements ImageTree{
 		if (this.root == null)
 			return null;
 		else {
+			double res = this.comparator.compare(img, this.root.getImage());
 			toReturn = new ArrayList<Image>();
+			if(res <= threshold)
+				toReturn.add(this.root.getImage());
 			searchAccumulate(img,this.root,toReturn);
 		}
 		return toReturn;
@@ -88,19 +84,19 @@ public class SimpleImageTree implements ImageTree{
 				if(res < this.threshold)
 					list.add(node.getLeft().getImage());
 				searchAccumulate(img, node.getLeft(), list);
-			}else {
+			}else if (node.getLeft() != null && node.getRight() != null){
 				double resLeft = this.comparator.compare(img, node.getLeft().getImage());
 				double resRight = this.comparator.compare(img, node.getRight().getImage());
-				if (resLeft < this.threshold) {
+				if (resLeft <= this.threshold) {
 					list.add(node.getLeft().getImage());
 					searchAccumulate(img, node.getLeft(), list);
-				}else {
-					searchCloser(img,resLeft,resRight,node,list);
 				}
-				if (resRight < this.threshold) {
-					searchAccumulate(img, node.getRight(), list);
+				if (resRight <= this.threshold) {
 					list.add(node.getRight().getImage());
+					searchAccumulate(img, node.getRight(), list);
 				}
+				if (resLeft > this.threshold && resRight > this.threshold)
+					searchCloser(img,resLeft,resRight,node,list);
 			}
 		}
 	}

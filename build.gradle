@@ -14,26 +14,22 @@ repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+
 }
 
 dependencies { 
+	// https://mvnrepository.com/artifact/jcs/jcs
+	compile group: 'jcs', name: 'jcs', version: '1.3'
+
+	compile group: 'org.openimaj', name: 'core', version: '1.3.6'
+    
 	compile('org.openimaj:image-processing:1.3.6') {
         exclude group: 'org.apache.xmlgraphics'
         exclude group: 'xml-apis'
     } 
     compile group: 'org.openimaj', name: 'image-feature-extraction', version: '1.3.6'
-    compile 'com.sun.media:jai_codec:1.1.2_01'
-
+    
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
-}
-   
-jar {
-    manifest {
-        attributes 'Main-Class': 'imagesearch.ui.console.Console'
-    }
-    from {
-		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-	}
 }
 
